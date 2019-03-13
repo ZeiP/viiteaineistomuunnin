@@ -14,7 +14,7 @@ def transform_op(data, account, transfer):
       amount = float(row[2].replace(',', '.'))
     except ValueError:
       continue
-    if amount > 0 and (transfer == 'all_in' or unicode(row[7]).isnumeric()):
+    if amount > 0 and (transfer == 'all' or unicode(row[7]).isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
       line.booking_date = datetime.strptime(row[1], '%d.%m.%Y')
@@ -37,7 +37,7 @@ def transform_nordea(data, account, transfer):
       amount = float(row[3].replace(',', '.'))
     except ValueError:
       continue
-    if amount > 0 and (transfer == 'all_in' or unicode(row[8]).isnumeric()):
+    if amount > 0 and (transfer == 'all' or unicode(row[8]).isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
       line.booking_date = datetime.strptime(row[1], '%d.%m.%Y')
@@ -52,7 +52,7 @@ def transform_nordea(data, account, transfer):
       output = output + str(line) + '\n'
   return output
 
-def transform_kuksa(data, account):
+def transform_kuksa(data, account, transfer):
   csv_reader = csv.reader(data, delimiter=';')
   output = ''
   for row in csv_reader:
@@ -60,13 +60,16 @@ def transform_kuksa(data, account):
       amount = float(row[8].replace(',', '.'))
     except ValueError:
       continue
-    if amount > 0:
+    if amount > 0 and (transfer == 'all' or unicode(row[4]).isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
       line.booking_date = date.today()
       line.payment_date = date.today()
       line.archive_id = 'VIITEMUUNNIN'
-      line.reference_no = row[4]
+      if unicode(row[4]).isnumeric():
+        line.reference_no = row[4]
+      else:
+        line.reference_no = '0'
       line.payer = row[3]
       line.amount = str(int(amount * 100))
       output = output + str(line) + '\n'

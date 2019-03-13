@@ -28,12 +28,11 @@ def upload():
     elif form.type.data == 'nordea':
       output = transform_nordea(f, account, transfer)
     elif form.type.data == 'kuksa':
-      output = transform_kuksa(f, account)
+      output = transform_kuksa(f, account, transfer)
     # Figure out a nice name
     filename = form.file.data.filename.split('.')[0]
     return Response(output, mimetype='text/plain', headers={
-      "Content-Disposition":
-      "attachment;filename=%s.txt" % filename
+      "Content-Disposition": "attachment;filename=%s.txt" % filename
     })
 
   return render_template('form.html', form=form)

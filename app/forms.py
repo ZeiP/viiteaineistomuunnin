@@ -9,7 +9,7 @@ class FileForm(FlaskForm):
   account = StringField(u'Tilinumero', validators=[DataRequired()])
   file = FileField(u'Tiedosto', validators=[FileRequired()])
   type = SelectField(u'Tyyppi', choices=[('op', 'Osuuspankki'), ('nordea', 'Nordea'), ('kuksa', 'Kuksan laskulista')], validators=[DataRequired()])
-  transfer = SelectField(u'Siirrettävät maksut', choices=[('only_ref', 'Saapuneet viitemaksut'), ('all_in', 'Kaikki saapuneet maksut')], validators=[DataRequired()])
+  transfer = SelectField(u'Siirrettävät maksut', choices=[('only_ref', 'Vain viitenumerolliset'), ('all', 'Kaikki')], validators=[DataRequired()])
 
 class FeedbackForm(FlaskForm):
   name = StringField(u'Nimi')
