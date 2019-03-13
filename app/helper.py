@@ -76,6 +76,7 @@ def transform_kuksa(data, account, transfer):
   return output
 
 def format_account(account):
+  account = account.replace(' ', '').replace('-', '')
   if account[:2] == 'FI':
     return iban_to_bban(iban)
   return account
