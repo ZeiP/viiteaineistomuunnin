@@ -28,9 +28,11 @@ def transform_op(data, account, transfer):
   return output
 
 def transform_nordea(data, account, transfer):
-  csv_reader = csv.reader(data, delimiter=';')
+  csv_reader = csv.reader(data, delimiter='\t')
   output = ''
   for row in csv_reader:
+    if len(row) < 4:
+      continue
     try:
       amount = float(row[3].replace(',', '.'))
     except ValueError:
