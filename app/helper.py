@@ -1,7 +1,5 @@
-from __future__ import print_function # In python 2.7
-
 import csv
-from fin_ktl import ReferenceTransferLine
+from app.fin_ktl import ReferenceTransferLine
 from datetime import datetime, date
 
 import sys
@@ -20,7 +18,7 @@ def transform_op(data, account, transfer):
       line.booking_date = datetime.strptime(row[1], '%d.%m.%Y')
       line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
       line.archive_id = row[9]
-      if unicode(row[7]).isnumeric():
+      if row[7].isnumeric():
         line.reference_no = row[7]
       else:
         line.reference_no = '0'
