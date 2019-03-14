@@ -15,8 +15,8 @@ def transform_op(data, account, transfer):
     if amount > 0 and (transfer == 'all' or row[7].replace(' ', '').isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
-      line.booking_date = datetime.strptime(row[1], '%d.%m.%Y')
-      line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.payment_date = datetime.strptime(row[1], '%d.%m.%Y')
       line.archive_id = row[9]
       if row[7].replace(' ', '').isnumeric():
         line.reference_no = row[7].replace(' ', '')
@@ -38,8 +38,8 @@ def transform_nordea(data, account, transfer):
     if amount > 0 and (transfer == 'all' or row[8].replace(' ', '').isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
-      line.booking_date = datetime.strptime(row[1], '%d.%m.%Y')
-      line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.payment_date = datetime.strptime(row[2], '%d.%m.%Y')
       line.archive_id = ' '
       if row[8].replace(' ', '').isnumeric():
         line.reference_no = row[8].replace(' ', '')
