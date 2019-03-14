@@ -38,7 +38,7 @@ def upload():
       f = open(tmpfilename, 'rt', encoding='iso-8859-15')
       output = transform_op(f, account, transfer)
     elif form.type.data == 'nordea':
-      f = open(tmpfilename, 'rt', encoding='iso-8859-15')
+      f = open(tmpfilename, 'rt', encoding='utf-8')
       output = transform_nordea(f, account, transfer)
     elif form.type.data == 'kuksa':
       f = open(tmpfilename, 'rt', encoding='utf-8')
