@@ -48,7 +48,7 @@ def upload():
     os.unlink(tmpfilename)
     # Figure out a nice name
     filename = form.file.data.filename.split('.')[0]
-    return Response(output, mimetype='text/plain', headers={
+    return Response(output.encode('iso-8859-15'), mimetype='text/plain', headers={
       "Content-Disposition": "attachment;filename=%s.txt" % filename
     })
 
