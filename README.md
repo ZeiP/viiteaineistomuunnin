@@ -1,8 +1,8 @@
-# Web service to convert Finnish bank's account statements to FIN-KTL data
+# Web service to convert data to KTL
 
 Viiteaineistomuunnin is a Flask-powered web service to convert payment events
-from various sources to a FIN-KTL compatible reference payment file for use
-with Kilta / Kuksa and other data consumers.
+from various sources to a KTL (konekielinen tapahtumaluettelo) compatible
+reference payment file for use with Kilta / Kuksa and other data consumers.
 
 ## Compatible source files
 
@@ -13,13 +13,18 @@ with Kilta / Kuksa and other data consumers.
 ## Installation
 
 * Create a virtual env using Python 3
-```virtualenv -p python3 env/
-```
+  ```
+  virtualenv -p python3[.X] env/
+  ```
 * Jump into the virtual env
-```source env/bin/activate
-```
+  ```
+  source env/bin/activate
+  ```
 * Install dependencies:
-```pip install -r requirements.txt
-```
+  ```
+  pip install -r requirements.txt
+  ```
 * Run the dev server:
-```python run.py```
+  ```
+  python run.py
+  ```
