@@ -70,6 +70,30 @@ def transform_tito(data, account, transfer):
       output = output + str(line) + '\n'
   return output
 
+def transform_saastopankki(data, account, transfer):
+  csv_reader = csv.reader(data, delimiter=';')
+  output = ''
+  for row in csv_reader:
+    try:
+      amount = float(row[4].replace(',', '.'))
+    except ValueError:
+      continue
+    if amount > 0 and (transfer == 'all' or row[2] == 'VIITESIIRTO'):
+      line = ReferenceTransferLine()
+      line.account_no = format_account(account)
+      line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.archive_id = 'VIITEMUUNNIN'
+      if row[3].replace(' ', '').replace('\'', '').isnumeric():
+        line.reference_no = row[3].replace(' ', '').replace('\'', '')
+      else:
+        line.reference_no = '0'
+      line.payer = row[1]
+      line.amount = str(int(amount * 100))
+      output = output + str(line) + '\n'
+      print(output)
+  return output
+
 def transform_kuksa(data, account, transfer):
   csv_reader = csv.reader(data, delimiter=';')
   output = ''
