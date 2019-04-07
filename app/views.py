@@ -40,6 +40,9 @@ def upload():
     elif form.type.data == 'nordea':
       f = open(tmpfilename, 'rt', encoding='utf-8')
       output = transform_nordea(f, account, transfer)
+    elif form.type.data == 'tito':
+      f = open(tmpfilename, 'rt', encoding='iso-8859-15')
+      output = transform_tito(f, account, transfer)
     elif form.type.data == 'kuksa':
       f = open(tmpfilename, 'rt', encoding='utf-8')
       output = transform_kuksa(f, account, transfer)

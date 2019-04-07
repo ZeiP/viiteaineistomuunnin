@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired
 class FileForm(FlaskForm):
   account = StringField(u'Tilinumero', validators=[DataRequired()])
   file = FileField(u'Tiedosto', validators=[FileRequired()])
-  type = SelectField(u'Tyyppi', choices=[('op', 'Osuuspankki'), ('nordea', 'Nordea'), ('kuksa', 'Kuksan laskulista')], validators=[DataRequired()])
+  type = SelectField(u'Tyyppi', choices=[('op', 'Osuuspankki'), ('nordea', 'Nordea tapahtumaluettelo'), ('tito', 'TITO (esim. Nordea yrityspankki)'), ('kuksa', 'Kuksan laskulista')], validators=[DataRequired()])
   transfer = SelectField(u'Siirrettävät maksut', choices=[('only_ref', 'Vain viitenumerolliset'), ('all', 'Kaikki')], validators=[DataRequired()])
 
 class FeedbackForm(FlaskForm):

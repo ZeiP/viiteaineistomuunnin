@@ -52,6 +52,24 @@ def transform_nordea(data, account, transfer):
       output = output + str(line) + '\n'
   return output
 
+def transform_tito(data, account, transfer):
+  output = ''
+  for row in data.readlines():
+    if row[0:3] == 'T10' and (row[48:49] == '1' or row[48:49] == '3') and (transfer == 'all' or row[159:179].strip()):
+      line = ReferenceTransferLine()
+      line.account_no = format_account(account)
+      line.booking_date = datetime.strptime(row[30:36], '%y%m%d')
+      line.payment_date = datetime.strptime(row[42:48], '%y%m%d')
+      line.archive_id = row[12:30]
+      if row[159:179].strip().isnumeric():
+        line.reference_no = row[159:179].strip()
+      else:
+        line.reference_no = '0'
+      line.payer = row[108:143]
+      line.amount = str(int(row[88:106]))
+      output = output + str(line) + '\n'
+  return output
+
 def transform_kuksa(data, account, transfer):
   csv_reader = csv.reader(data, delimiter=';')
   output = ''
