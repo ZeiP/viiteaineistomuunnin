@@ -91,7 +91,6 @@ def transform_saastopankki(data, account, transfer):
       line.payer = row[1]
       line.amount = str(int(amount * 100))
       output = output + str(line) + '\n'
-      print(output)
   return output
 
 def transform_kuksa(data, account, transfer):
