@@ -9,6 +9,7 @@ reference payment file for use with Kilta / Kuksa and other data consumers.
 * Osuuspankki event CSV file
 * Nordea event listing CSV file
 * Säästöpankki event listing CSV file
+* TITO file (for example Nordea company banking)
 * Kilta / Kuksa invoice Excel export converted to CSV
 
 ## Installation
