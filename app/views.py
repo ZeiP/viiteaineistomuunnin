@@ -22,7 +22,7 @@ def upload():
 
     # Add a row with the date and conversion type for each use for statistics.
     with open("/srv/django/viiteaineisto/log.txt", "a") as statfile:
-      statfile.write(str(datetime.date.today()) + ";" + form.type.data)
+      statfile.write(str(datetime.date.today()) + ";" + form.type.data + "\n")
 
     # Apparently we need to save the contents to a file to open the stream
     # in text mode for the csv reader. Create a tmp file to generate a
@@ -40,8 +40,11 @@ def upload():
       account = iban_to_bban(account)
 
     if form.type.data == 'op':
-      f = open(tmpfilename, 'rt', encoding='utf-8')
+      f = open(tmpfilename, 'rt', encoding='iso-8859-15')
       output = transform_op(f, account, transfer)
+    elif form.type.data == 'nordea_csv':
+      f = open(tmpfilename, 'rt', encoding='utf-8')
+      output = transform_nordea_csv(f, account, transfer)
     elif form.type.data == 'nordea':
       f = open(tmpfilename, 'rt', encoding='utf-8')
       output = transform_nordea(f, account, transfer)

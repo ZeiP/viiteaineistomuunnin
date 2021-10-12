@@ -8,18 +8,46 @@ def transform_op(data, account, transfer):
   csv_reader = csv.reader(data, delimiter=';')
   output = ''
   for row in csv_reader:
+    ref_no = row[8].replace('Ref=', '').replace(' ', '')
     try:
       amount = float(row[2])
     except ValueError:
       continue
-    if amount > 0 and (transfer == 'all' or row[7].replace(' ', '').isnumeric()):
+    if amount > 0 and (transfer == 'all' or ref_no.isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
-      line.booking_date = datetime.strptime(row[0], '%Y-%m-%d')
-      line.payment_date = datetime.strptime(row[1], '%Y-%m-%d')
+      try:
+        line.booking_date = datetime.strptime(row[0], '%Y-%m-%d')
+        line.payment_date = datetime.strptime(row[1], '%Y-%m-%d')
+      except ValueError:
+        line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
+        line.payment_date = datetime.strptime(row[1], '%d.%m.%Y')
       line.archive_id = row[10]
-      if row[8].replace('Ref=', '').replace(' ', '').isnumeric():
-        line.reference_no = row[8].replace('Ref=', '').replace(' ', '')
+      if ref_no.isnumeric():
+        line.reference_no = ref_no
+      else:
+        line.reference_no = '0'
+      line.payer = row[5]
+      line.amount = str(int(amount * 100))
+      output = output + str(line) + '\n'
+  return output
+
+def transform_nordea_csv(data, account, transfer):
+  csv_reader = csv.reader(data, delimiter=';')
+  output = ''
+  for row in csv_reader:
+    try:
+      amount = float(row[1].replace(',', '.'))
+    except ValueError:
+      continue
+    if amount > 0 and (transfer == 'all' or row[6].replace(' ', '').isnumeric()):
+      line = ReferenceTransferLine()
+      line.account_no = format_account(account)
+      line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
+      line.archive_id = ' '
+      if row[6].replace(' ', '').isnumeric():
+        line.reference_no = row[6].replace(' ', '')
       else:
         line.reference_no = '0'
       line.payer = row[5]

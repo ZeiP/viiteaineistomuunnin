@@ -7,7 +7,8 @@ reference payment file for use with Kilta / Kuksa and other data consumers.
 ## Compatible source files
 
 * Osuuspankki event CSV file
-* Nordea event listing CSV file
+* Nordea event listing CSV file (old Web banking service)
+* Nordea CSV export file (new Web banking service)
 * Säästöpankki event listing CSV file
 * TITO file (for example Nordea company banking)
 * Kilta / Kuksa invoice Excel export converted to CSV
