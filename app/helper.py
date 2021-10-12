@@ -9,17 +9,17 @@ def transform_op(data, account, transfer):
   output = ''
   for row in csv_reader:
     try:
-      amount = float(row[2].replace(',', '.'))
+      amount = float(row[2])
     except ValueError:
       continue
     if amount > 0 and (transfer == 'all' or row[7].replace(' ', '').isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
-      line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
-      line.payment_date = datetime.strptime(row[1], '%d.%m.%Y')
-      line.archive_id = row[9]
-      if row[7].replace(' ', '').isnumeric():
-        line.reference_no = row[7].replace(' ', '')
+      line.booking_date = datetime.strptime(row[0], '%Y-%m-%d')
+      line.payment_date = datetime.strptime(row[1], '%Y-%m-%d')
+      line.archive_id = row[10]
+      if row[8].replace('Ref=', '').replace(' ', '').isnumeric():
+        line.reference_no = row[8].replace('Ref=', '').replace(' ', '')
       else:
         line.reference_no = '0'
       line.payer = row[5]

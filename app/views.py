@@ -12,11 +12,17 @@ import sys, os
 
 from tempfile import NamedTemporaryFile
 
+import datetime
+
 @app.route('/', methods=['GET', 'POST'])
 def upload():
   form = FileForm()
   if form.validate_on_submit():
 #    print(form.file.data.filename, file=sys.stderr)
+
+    # Add a row with the date and conversion type for each use for statistics.
+    with open("/srv/django/viiteaineisto/log.txt", "a") as statfile:
+      statfile.write(str(datetime.date.today()) + ";" + form.type.data)
 
     # Apparently we need to save the contents to a file to open the stream
     # in text mode for the csv reader. Create a tmp file to generate a
@@ -25,7 +31,6 @@ def upload():
     tmpfilename = tmpfile.name
     tmpfile.close()
     form.file.data.save(tmpfilename)
-    # Osuuspankki uses ISO-8859-15.
     # Doesn't work because it's in binary mode, not text.
 #    f = form.file.data.stream
 
@@ -35,7 +40,7 @@ def upload():
       account = iban_to_bban(account)
 
     if form.type.data == 'op':
-      f = open(tmpfilename, 'rt', encoding='iso-8859-15')
+      f = open(tmpfilename, 'rt', encoding='utf-8')
       output = transform_op(f, account, transfer)
     elif form.type.data == 'nordea':
       f = open(tmpfilename, 'rt', encoding='utf-8')
