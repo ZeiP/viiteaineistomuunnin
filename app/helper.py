@@ -8,11 +8,20 @@ def transform_op(data, account, transfer):
   csv_reader = csv.reader(data, delimiter=';')
   output = ''
   for row in csv_reader:
-    ref_no = row[8].replace('Ref=', '').replace(' ', '')
+    if len(row) == 10:
+      ref_no = row[7]
+      archive_id = row[9]
+    else:
+      ref_no = row[8]
+      archive_id = row[10]
+    ref_no = ref_no.replace('ref=', '').replace(' ', '')
     try:
       amount = float(row[2])
     except ValueError:
-      continue
+      try:
+        amount = float(row[2].replace(",", "."))
+      except ValueError:
+        continue
     if amount > 0 and (transfer == 'all' or ref_no.isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
@@ -22,7 +31,7 @@ def transform_op(data, account, transfer):
       except ValueError:
         line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
         line.payment_date = datetime.strptime(row[1], '%d.%m.%Y')
-      line.archive_id = row[10]
+      line.archive_id = archive_id
       if ref_no.isnumeric():
         line.reference_no = ref_no
       else:
