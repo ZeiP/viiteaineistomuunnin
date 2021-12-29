@@ -54,11 +54,12 @@ def transform_nordea_csv(data, account, transfer):
       line.account_no = format_account(account)
       line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
       line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
-      line.archive_id = ' '
       if row[6].replace(' ', '').isnumeric():
         line.reference_no = row[6].replace(' ', '')
       else:
         line.reference_no = '0'
+      # Use reference no as archive ID, as nothing better's available.
+      line.archive_id = line.reference_no
       line.payer = row[5]
       line.amount = str(int(amount * 100))
       output = output + str(line) + '\n'
@@ -79,11 +80,12 @@ def transform_nordea(data, account, transfer):
       line.account_no = format_account(account)
       line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
       line.payment_date = datetime.strptime(row[2], '%d.%m.%Y')
-      line.archive_id = ' '
       if row[8].replace(' ', '').isnumeric():
         line.reference_no = row[8].replace(' ', '')
       else:
         line.reference_no = '0'
+      # Use reference no as archive ID, as nothing better's available.
+      line.archive_id = line.reference_no
       line.payer = row[4]
       line.amount = str(int(amount * 100))
       output = output + str(line) + '\n'
@@ -120,11 +122,12 @@ def transform_saastopankki(data, account, transfer):
       line.account_no = format_account(account)
       line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
       line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
-      line.archive_id = 'VIITEMUUNNIN'
       if row[3].replace(' ', '').replace('\'', '').isnumeric():
         line.reference_no = row[3].replace(' ', '').replace('\'', '')
       else:
         line.reference_no = '0'
+      # Use reference no as archive ID, as nothing better's available.
+      line.archive_id = line.reference_no
       line.payer = row[1]
       line.amount = str(int(amount * 100))
       output = output + str(line) + '\n'
