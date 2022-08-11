@@ -54,6 +54,21 @@ def upload():
     elif form.type.data == 'saastopankki':
       f = open(tmpfilename, 'rt', encoding='iso-8859-15')
       output = transform_saastopankki(f, account, transfer)
+    elif form.type.data == 'saastopankki_alt':
+      fin = open(tmpfilename, 'rt', encoding='iso-8859-15')
+      tmpfile = NamedTemporaryFile(delete=False)
+      tmpfilename2 = tmpfile.name
+      tmpfile.close()
+      fout = open(tmpfilename2, 'wt', encoding='iso-8859-15')
+      for line in fin:
+        fout.write(line.replace('"', ''))
+      fin.close()
+      fout.close()
+      os.unlink(tmpfilename)
+      tmpfilename = tmpfilename2
+
+      f = open(tmpfilename, 'rt', encoding='iso-8859-15')
+      output = transform_saastopankki(f, account, transfer)
     elif form.type.data == 'kuksa':
       f = open(tmpfilename, 'rt', encoding='utf-8')
       output = transform_kuksa(f, account, transfer)
