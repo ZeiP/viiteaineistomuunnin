@@ -52,8 +52,14 @@ def transform_nordea_csv(data, account, transfer):
     if amount > 0 and (transfer == 'all' or row[6].replace(' ', '').isnumeric()):
       line = ReferenceTransferLine()
       line.account_no = format_account(account)
-      line.booking_date = datetime.strptime(row[0], '%d.%m.%Y')
-      line.payment_date = datetime.strptime(row[0], '%d.%m.%Y')
+      dateformat = '%d.%m.%Y'
+      try:
+        line.booking_date = datetime.strptime(row[0], dateformat)
+        line.payment_date = datetime.strptime(row[0], dateformat)
+      except ValueError:
+        dateformat = '%Y/%m/%d'
+        line.booking_date = datetime.strptime(row[0], dateformat)
+        line.payment_date = datetime.strptime(row[0], dateformat)
       if row[6].replace(' ', '').isnumeric():
         line.reference_no = row[6].replace(' ', '')
       else:
